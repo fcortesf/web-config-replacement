@@ -207,7 +207,7 @@ Format: into a enviroment you must create a property called "log4net", this prop
 >Package.json script example
 ```json
  "scripts": {
-    "replaceConfig": "node ./build/index.js --configXmlFile:test.config --envConfigFile:config.json --envKey:UAT"
+    "replaceConfig": "web-config-replacer --configXmlFile:test.config --envConfigFile:config.json --envKey:UAT"
     }
 ```
 
