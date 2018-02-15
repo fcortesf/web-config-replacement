@@ -5,19 +5,21 @@ import * as path from 'path';
 const currentDir = process.cwd();
 
 function processArgs(nodeArgs: any): any {
-    var expectedArgsName = {
+    const expectedArgsName = {
         configXmlFile: '--configXmlFile:',
         envConfigFile: '--envConfigFile:',
         envKey: '--envKey:',
         replacers: '--replacers:'
     };
-    var configArgs = {
+
+    let configArgs = {
         configXmlFile: process.argv.find((arg) => arg.startsWith(expectedArgsName.configXmlFile)),
         envConfigFile: process.argv.find((arg) => arg.startsWith(expectedArgsName.envConfigFile)),
         envKey: process.argv.find((arg) => arg.startsWith(expectedArgsName.envKey)),
         replacers: ['']
     };
-    var replacers = process.argv.find((arg) => arg.startsWith(expectedArgsName.replacers));
+
+    const replacers = process.argv.find((arg) => arg.startsWith(expectedArgsName.replacers));
     configArgs.configXmlFile = configArgs.configXmlFile ?
         path.resolve(currentDir, configArgs.configXmlFile.substring(expectedArgsName.configXmlFile.length)) : '';
     configArgs.envConfigFile = configArgs.envConfigFile ?
@@ -34,17 +36,17 @@ function processArgs(nodeArgs: any): any {
     return configArgs;
 }
 
-var args = processArgs(process.argv);
+const args = processArgs(process.argv);
 
 function configReplacement(filesArgs: any) {
     const filePath = path.resolve(process.cwd(), filesArgs.envConfigFile);
-    const envConfig = require(filePath);
+    const envConfig = require(filePath); //JSON
 
-    fs.readFile(filesArgs.configXmlFile, 'utf-8', function (err: any, configXml: any) {
+    fs.readFile(filesArgs.configXmlFile, 'utf-8', function (err, configXml) {
         if (err) process.stdout.write(JSON.stringify(err));
-        var configReplacersToApply = getConfigReplacersToApply(filesArgs.replacers);
+        const configReplacersToApply = getConfigReplacersToApply(filesArgs.replacers);
 
-        var execConfigReplacers = function (index: number) {
+        function execConfigReplacers(index: number): Promise<void> {
             return new Promise((resolve, reject) => {
                 if (index >= configReplacersToApply.length) {
                     resolve();
@@ -60,8 +62,8 @@ function configReplacement(filesArgs: any) {
         }
 
         execConfigReplacers(0).then(() => {
-            fs.writeFile(filesArgs.configXmlFile, configXml, function (err: any, data: any) {
-                if (err) throw Error(err);
+            fs.writeFile(filesArgs.configXmlFile, configXml, (err) => {
+                if (err) throw Error(err.message);
             })
         });
 

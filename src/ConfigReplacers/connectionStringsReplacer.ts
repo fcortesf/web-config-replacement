@@ -1,34 +1,33 @@
 import { IConfigReplacer } from '../IConfigReplacer';
-import { parseString, Builder }  from 'xml2js';
+import { parseString, Builder } from 'xml2js';
 
 let connectionStringsReplacer: IConfigReplacer;
-connectionStringsReplacer = function(webConfigSource: string, config: any, 
-    configKey: string) : Promise<string> {
-        return new Promise((resolve, reject) => {
-            var actualEnviromentConnectionStrings = config[configKey].connectionStrings;
-            // Convert XML to JSON
-            parseString(webConfigSource,
-                function(err:any, webConfigTree:any){
-                    if(err) reject(err);                 
-                    // Discover enviroment config connectionStrings names to change       
-                    for(var connectionStringToChangeName in actualEnviromentConnectionStrings){                                             
-                        var connectionStringToReplace = webConfigTree.configuration.connectionStrings[0]
-                            .add.find((connectionStringElement:any) =>{
-                                return connectionStringElement.$.name === connectionStringToChangeName;
-                            });
-                        if(connectionStringToReplace){
-                            connectionStringToReplace.$.connectionString 
-                                = actualEnviromentConnectionStrings[connectionStringToChangeName];
-                        }
+connectionStringsReplacer = function (webConfigSource: string, config: any,
+    configKey: string): Promise<string> {
+    return new Promise((resolve, reject) => {
+        const actualEnviromentConnectionStrings = config[configKey].connectionStrings;
+        // Convert XML to JSON
+        parseString(webConfigSource,
+            function (err: any, webConfigTree: any) {
+                if (err) reject(err);
+                // Discover enviroment config connectionStrings names to change       
+                for (let connectionStringToChangeName in actualEnviromentConnectionStrings) {
+                    const connectionStringToReplace = webConfigTree.configuration.connectionStrings[0]
+                        .add.find((connectionStringElement: any) => connectionStringElement.$.name === connectionStringToChangeName);
+                        
+                    if (connectionStringToReplace) {
+                        connectionStringToReplace.$.connectionString
+                            = actualEnviromentConnectionStrings[connectionStringToChangeName];
                     }
-                    var actualBuilder = new Builder();
-                    var convertedConfig = actualBuilder.buildObject(webConfigTree);
-                    resolve(convertedConfig);
+                }
+                const actualBuilder = new Builder();
+                const convertedConfig = actualBuilder.buildObject(webConfigTree);
+                resolve(convertedConfig);
             });
-        });
-        
-        
+    });
+
+
 }
 
 
-export {connectionStringsReplacer};
+export { connectionStringsReplacer };

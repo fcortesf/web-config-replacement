@@ -1,34 +1,30 @@
 import { IConfigReplacer } from '../IConfigReplacer';
-import { parseString, Builder }  from 'xml2js';
+import { parseString, Builder } from 'xml2js';
 
 let appSettingsReplacer: IConfigReplacer;
-appSettingsReplacer = function(webConfigSource: string, config: any, 
-    configKey: string) : Promise<string> {
-        return new Promise((resolve, reject) => {
-            var actualEnviromentAppSettings = config[configKey].appSettings;
-            // Convert XML to JSON
-            parseString(webConfigSource,
-                function(err:any, webConfigTree:any){
-                    if(err) reject(err);                 
-                    // Discover enviroment config appSettings keys to change       
-                    for(var appSeettingsToChangeKey in actualEnviromentAppSettings){                                             
-                        var appSettingToReplace = webConfigTree.configuration.appSettings[0]
-                            .add.find((appSettingElement : any) =>{
-                                return appSettingElement.$.key === appSeettingsToChangeKey;
-                            });
-                        if(appSettingToReplace){
-                            appSettingToReplace.$.value 
-                                = actualEnviromentAppSettings[appSeettingsToChangeKey];
-                        }
+
+appSettingsReplacer = function (webConfigSource: string, config: any, configKey: string): Promise<string> {
+    return new Promise((resolve, reject) => {
+        const actualEnviromentAppSettings = config[configKey].appSettings;
+        // Convert XML to JSON
+        parseString(webConfigSource,
+            function (err: any, webConfigTree: any) {
+                if (err) reject(err);
+                // Discover enviroment config appSettings keys to change       
+                for (let appSeettingsToChangeKey in actualEnviromentAppSettings) {
+                    let appSettingToReplace = webConfigTree.configuration.appSettings[0]
+                        .add.find((appSettingElement: any) => appSettingElement.$.key === appSeettingsToChangeKey);
+                        
+                    if (appSettingToReplace) {
+                        appSettingToReplace.$.value
+                            = actualEnviromentAppSettings[appSeettingsToChangeKey];
                     }
-                    var actualBuilder = new Builder();
-                    var convertedConfig = actualBuilder.buildObject(webConfigTree);
-                    resolve(convertedConfig);
+                }
+                const actualBuilder = new Builder();
+                const convertedConfig = actualBuilder.buildObject(webConfigTree);
+                resolve(convertedConfig);
             });
-        });
-        
-        
+    });
 }
 
-
-export {appSettingsReplacer};
+export { appSettingsReplacer };
