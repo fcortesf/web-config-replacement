@@ -1,6 +1,8 @@
 # WebConfig Replacer
-With this script you can modify a web.config by a specific config file json and a enviromental key. For example, you have a project for a client with multiple enviroments, 
-you can create a config.json file for this client with root enviroment keys. See config.json example.
+With this script you can modify a web.config by a json config file with enviromental keys within. If  your project has a client with multiple enviroments, 
+you can create a config.json per client with each enviromental configuration inside.
+
+See config.json example.
 
 ## Installation
 
@@ -49,7 +51,7 @@ npm run build
 | --replacers        | Web config replacers functions to execute, separated by ','  |     X     |
 
 ## Configuration file basic structure
-Configuration file must be a json file. The root elements of the json must be properties with the enviromental keys.
+Configuration file __must__ be a json file. The root elements of the json must be properties with enviromental keys.
 ```json
 {
     "env1":{... env config},
@@ -57,19 +59,24 @@ Configuration file must be a json file. The root elements of the json must be pr
 }
 ```
 
-The env config depend on the replacer you want to execute, because every replacer has its own JSON config format.
+The env config depends on the replacer you want to execute, because every replacer has its own JSON config format.
 
 ## Config replacers
-The system has 3 replacer currently: connectionStringsReplacer, appSettingsReplacers and log4netAppenderChildNodesReplacer. By default you execute every replacer, but you can choose the replacers to execute by 2 ways:
+The system has 3 replacer currently: 
+* connectionStringsReplacer
+* appSettingsReplacers
+* log4netAppenderChildNodesReplacer..
+
+By default, it executes every replacer, but you can choose the replacers to execute by 2 ways:
 - Skipping the replacer config on config file.
 - Via '--replacers' parameter. 
 
-Note: you can contribute creating new replacers. You must create a function that implements IConfigReplacer and adding your funtion to configReplacersFactory.
+>Note: you can contribute creating new replacers. You must create a function that implements ```IConfigReplacer``` and adding your function to ```configReplacersFactory```.
 
 ### connectionStringsReplacer
-The connectionStringsReplacer manage the web.config connectionStrings. With this you can use different connectionStrings by enviroment. 
+The connectionStringsReplacer manages the web.config connectionStrings. With this you can use different connectionStrings by enviroment. 
 
-Format: into a enviroment you must create a property called "connectionStrings", this property contains an object whose properties are connectionStrings names and the value is the connectionString itself.
+__Format__: inside an enviroment you must create a property called "connectionStrings", this property contains an object whose properties are connectionStrings names and the value is the connectionString itself.
 
 ```json
 {
@@ -86,9 +93,9 @@ Format: into a enviroment you must create a property called "connectionStrings",
 ```
 
 ### appSettingsReplacer
-The appSettingsReplacer manage the web.config appSettings. With this you can use a different value by enviroment. 
+The appSettingsReplacer manages the web.config appSettings. With this you can use a different value by enviroment. 
 
-Format: into a enviroment you must create a property called "appSettings", this property contains an object whose properties are appSettings names and the value is the value for that appSetting.
+__Format__: into a enviroment you must create a property called "appSettings", this property contains an object whose properties are appSettings names and the value is the value for that appSetting.
 
 ```json
 {
@@ -105,8 +112,9 @@ Format: into a enviroment you must create a property called "appSettings", this 
 ```
 
 ### log4netAppenderChildNodesReplacer
-This replacer is a little bit different, this replacer change the value of an appender's child.
-What? I have a log4net configuration into a web.config file. This log4net node has an specific structure with nodes into him, like this:
+This replacer is a little bit different, it changes the value of an appender's child.
+
+__What?__ I have a log4net configuration into a web.config file. This log4net node has an specific structure with nodes into him, like this:
 ```xml
 <log4net>
     <appender type="log4net.Appender.RollingFileAppender" name="RollingLogFileAppender">
@@ -134,7 +142,7 @@ What? I have a log4net configuration into a web.config file. This log4net node h
   </log4net>
 ```
 
-Format: into a enviroment you must create a property called "log4net", this property must be an object with a "appenders" property that contains an array. This array must contains objects with: "name" and "nodes" properties. "name" is the specific name for the appender an nodes must  be an object whose properties must be the node type of the node you want to change the value.
+Format: inside an enviroment you must create a property called "log4net", this property must be an object with an "appenders" property that contains an array. This array must contain objects with: "name" and "nodes" properties. "name" is the specific name for the appender and nodes must be an object whose properties must be the node type of the node you want to switch the value.
 
 ```json
 {
