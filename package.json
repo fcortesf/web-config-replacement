@@ -4,20 +4,25 @@
     "description": "Replace some components in your web.config (.NET Web Projects). For example, replace connection strings, etc.",
     "main": "build/index.js",
     "types": "build/index.d.ts",
+    "home":"https://github.com/fcortesf/web-config-replacement",
+    "repository":{
+      "type":"git",
+      "url": "https://github.com/fcortesf/web-config-replacement.git"  
+    },
     "scripts": {
         "test": "jest",
         "test:watch": "jest --watchAll",
         "build": "npm run test && rimraf ./build && gulp",
-        "prepare": "npm run build",
-        "publish:server": "npm publish --registry https://verdaccio.borsan.es"
+        "prepare": "npm run build"        
     },
     "keywords": [
         "TS",
-        "Javascript",
-        "npm"
+        "config",
+        "web.config",
+        "NET"
     ],
-    "author": "fcortes",
-    "license": "ISC",
+    "author": "fcortesf",
+    "license": "MIT",
     "devDependencies": {
         "@types/jest": "^21.1.9",
         "@types/lodash": "^4.14.92",
