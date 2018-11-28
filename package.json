@@ -4,16 +4,16 @@
     "description": "Replace some components in your web.config (.NET Web Projects). For example, replace connection strings, etc.",
     "main": "build/index.js",
     "types": "build/index.d.ts",
-    "home":"https://github.com/fcortesf/web-config-replacement",
-    "repository":{
-      "type":"git",
-      "url": "https://github.com/fcortesf/web-config-replacement.git"  
+    "home": "https://github.com/fcortesf/web-config-replacement",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/fcortesf/web-config-replacement.git"
     },
     "scripts": {
         "test": "jest",
         "test:watch": "jest --watchAll",
         "build": "npm run test && rimraf ./build && gulp",
-        "prepare": "npm run build"        
+        "prepare": "npm run build"
     },
     "keywords": [
         "TS",
@@ -27,20 +27,20 @@
         "@types/jest": "^21.1.9",
         "@types/lodash": "^4.14.92",
         "@types/node": "^9.4.6",
-        "babel-core": "^6.26.0",
-        "babel-plugin-lodash": "^3.3.2",
+        "babel-core": "^6.26.3",
+        "babel-plugin-lodash": "^3.3.4",
         "babel-plugin-transform-remove-console": "^6.8.5",
-        "babel-preset-env": "^1.6.1",
+        "babel-preset-env": "^1.7.0",
         "babel-preset-minify": "^0.2.0",
-        "gulp": "^3.9.1",
+        "gulp": "^4.0.0",
         "gulp-babel": "^7.0.0",
-        "gulp-sourcemaps": "^2.6.2",
+        "gulp-sourcemaps": "^2.6.4",
         "gulp-typescript": "^3.2.3",
         "jest": "^22.0.4",
-        "lodash": "^4.17.4",
+        "lodash": "^4.17.11",
         "merge2": "^1.2.0",
         "rimraf": "^2.6.2",
-        "ts-jest": "^22.0.0",
+        "ts-jest": "^23.10.5",
         "ts-node": "^4.1.0",
         "typescript": "^2.6.2"
     },
